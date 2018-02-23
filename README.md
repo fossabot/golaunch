@@ -7,7 +7,12 @@
 
 ***DEMO:***
 
+`golaunch` launchs applications w/ your search or filtering.
+
 ## :rocket: Features
+
+- Search apps w/ their name and launch them
+- Filter apps w/ their simple description and launch them
 
 ## :zap: Requirement
 
