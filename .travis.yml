@@ -1,4 +1,7 @@
 language: go
 
-notifications:
-  email: false
+version:
+  - 1.9
+
+script:
+  - make test
