@@ -12,7 +12,7 @@ func TestGetLocalAppNames(t *testing.T) {
 	}
 
 	if len(appNames) == 0 {
-		t.Error("App names don't exist.")
+		t.Fatal("App names don't exist.")
 	}
 
 	fmt.Println(appNames)
