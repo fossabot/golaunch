@@ -17,3 +17,12 @@ func TestGetLocalAppNames(t *testing.T) {
 
 	fmt.Println(appNames)
 }
+
+func TestGetAppItems(t *testing.T) {
+	appNames, err := GetLocalAppNames()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	GetAppItems(appNames)
+}
