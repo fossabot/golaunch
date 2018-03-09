@@ -4,13 +4,13 @@ version:
   - 1.9
 
 before_script:
-  - if [ ! -e /Applications ]; then mkdir /Applications; fi
-  - cd /Applications
-  - touch sample1.app sample2.app
+  - if [ ! -e ~/TmpApplications ]; then mkdir ~/TmpApplications; fi
+  - export APP_DIR=~/TmpApplications
+  - touch $APP_DIR/sample1.app $APP_DIR/sample2.app
 
 script:
   - make test
 
 after_script:
-  - cd /Applications
-  - rm -f sample1.app sample2.app
+  - rm -f $APP_DIR/sample1.app $APP_DIR/sample2.app
+  - rmdir $APP_DIR
