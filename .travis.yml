@@ -4,9 +4,7 @@ version:
   - 1.9
 
 before_script:
-  - if [ ! -e /Applications ]; then
-      mkdir /Applications
-    fi
+  - if [ ! -e /Applications ]; then mkdir /Applications; fi
   - cd /Applications
   - touch sample1.app sample2.app
 
