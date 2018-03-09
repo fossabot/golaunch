@@ -39,7 +39,7 @@ type (
 const apiEndPoint = "https://itunes.apple.com/search"
 
 func GetLocalAppNames() ([]string, error) {
-	appDir := os.Getenv("APP_DIR")
+	appDir := os.Getenv("GOLAUNCH_APP_DIR")
 	fmt.Println(appDir)
 	files, err := ioutil.ReadDir(appDir)
 	if err != nil {

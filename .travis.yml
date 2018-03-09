@@ -5,12 +5,12 @@ version:
 
 before_script:
   - if [ ! -e ~/TmpApplications ]; then mkdir ~/TmpApplications; fi
-  - export APP_DIR=~/TmpApplications
-  - touch $APP_DIR/sample1.app $APP_DIR/sample2.app
+  - export GOLAUNCH_APP_DIR=~/TmpApplications
+  - touch $GOLAUNCH_APP_DIR/sample1.app $GOLAUNCH_APP_DIR/sample2.app
 
 script:
   - make test
 
 after_script:
-  - rm -f $APP_DIR/sample1.app $APP_DIR/sample2.app
-  - rmdir $APP_DIR
+  - rm -f $GOLAUNCH_APP_DIR/sample1.app $GOLAUNCH_APP_DIR/sample2.app
+  - rmdir $GOLAUNCH_APP_DIR
