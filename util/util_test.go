@@ -72,15 +72,17 @@ func TestGetAppItems(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	appItems, err := GetAppItems(appNames)
+	officialApps, unofficialAppNames, err := GetAppItems(appNames)
+	fmt.Println("officialApps: ", officialApps)
+	fmt.Println("unofficialAppNames:", unofficialAppNames)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(appItems) != 1 {
-		t.Fatal(err)
+	if len(officialApps) != 1 {
+		t.Fatal("The number of apps is wrong.")
 	}
-	if appItems[0].Name != "Evernote" {
-		t.Fatal(err)
+	if officialApps[0].Name != "Evernote" {
+		t.Fatal("The app name should be Evernote.")
 	}
 
 	err = os.RemoveAll(appDir)
