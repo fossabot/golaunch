@@ -3,14 +3,5 @@ language: go
 version:
   - 1.9
 
-before_script:
-  - if [ ! -e ~/TmpApplications ]; then mkdir ~/TmpApplications; fi
-  - export GOLAUNCH_APP_DIR=~/TmpApplications
-  - touch $GOLAUNCH_APP_DIR/sample1.app $GOLAUNCH_APP_DIR/sample2.app
-
 script:
   - make test
-
-after_script:
-  - rm -f $GOLAUNCH_APP_DIR/sample1.app $GOLAUNCH_APP_DIR/sample2.app
-  - rmdir $GOLAUNCH_APP_DIR
