@@ -7,40 +7,30 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"regexp"
 	"strings"
 	"time"
 )
 
 type (
-	SearchMap struct {
-		TrackName        string   `json:"trackName"`
-		Description      string   `json:"description"`
+	AppItem struct {
+		Name             string   `json:"trackName"`
+		description      string   `json:"description"`
 		Genres           []string `json:"genres"`
 		PrimaryGenreName string   `json:"primaryGenreName"`
 	}
 
-	SearchResult struct {
-		ResultCount int         `json:"resultCount"`
-		Results     []SearchMap `json:"results"`
-	}
-
-	AppItem struct {
-		Name         string
-		Description  string
-		Genres       []string
-		PrimaryGenre string
-	}
-
 	AppItems []AppItem
+
+	SearchResult struct {
+		ResultCount int      `json:"resultCount"`
+		Results     AppItems `json:"results"`
+	}
 )
 
 const apiEndPoint = "https://itunes.apple.com/search"
 
-func GetLocalAppNames() ([]string, error) {
-	appDir := os.Getenv("GOLAUNCH_APP_DIR")
-	fmt.Println(appDir)
+func GetLocalAppNames(appDir string) ([]string, error) {
 	files, err := ioutil.ReadDir(appDir)
 	if err != nil {
 		return nil, err
@@ -65,7 +55,6 @@ func GetLocalAppNames() ([]string, error) {
 
 func GetAppItems(appNames []string) (AppItems, error) {
 	var appItems AppItems
-	var count int
 
 	for _, appName := range appNames {
 		v := url.Values{}
@@ -91,18 +80,11 @@ func GetAppItems(appNames []string) (AppItems, error) {
 			continue
 		}
 
-		if primaryName := strings.Fields(appName)[0]; !strings.Contains(result.Results[0].TrackName, primaryName) {
-			log.Println(appName, "did't be found.")
-			continue
-		}
-
-		count++
-		fmt.Printf("%v\n", result.Results[0])
+		appItems = append(appItems, result.Results[0])
 
 		time.Sleep(time.Second)
 	}
 
-	fmt.Printf("%d/%d found.\n", count, len(appNames))
-
+	fmt.Println(appItems)
 	return appItems, nil
 }
