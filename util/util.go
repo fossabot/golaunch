@@ -53,8 +53,9 @@ func GetLocalAppNames(appDir string) ([]string, error) {
 	return appNames, nil
 }
 
-func GetAppItems(appNames []string) (AppItems, error) {
-	var appItems AppItems
+func GetAppItems(appNames []string) (AppItems, []string, error) {
+	var officialApps AppItems
+	var unofficialAppNames []string
 
 	for _, appName := range appNames {
 		v := url.Values{}
@@ -76,15 +77,15 @@ func GetAppItems(appNames []string) (AppItems, error) {
 			continue
 		}
 		if len(result.Results) == 0 {
-			log.Println(appName, "did't be found.")
+			// log.Println(appName, "did't be found.")
+			unofficialAppNames = append(unofficialAppNames, appName)
 			continue
 		}
 
-		appItems = append(appItems, result.Results[0])
+		officialApps = append(officialApps, result.Results[0])
 
 		time.Sleep(time.Second)
 	}
 
-	fmt.Println(appItems)
-	return appItems, nil
+	return officialApps, unofficialAppNames, nil
 }
