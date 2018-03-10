@@ -77,7 +77,6 @@ func GetAppItems(appNames []string) (AppItems, []string, error) {
 			continue
 		}
 		if len(result.Results) == 0 {
-			// log.Println(appName, "did't be found.")
 			unofficialAppNames = append(unofficialAppNames, appName)
 			continue
 		}
