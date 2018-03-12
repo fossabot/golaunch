@@ -15,7 +15,7 @@ import (
 type (
 	AppItem struct {
 		Name             string   `json:"trackName"`
-		description      string   `json:"description"`
+		Description      string   `json:"description"`
 		Genres           []string `json:"genres"`
 		PrimaryGenreName string   `json:"primaryGenreName"`
 	}
