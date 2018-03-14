@@ -1,3 +1,2 @@
 .envrc
-Gopkg.*
 vendor/
