@@ -7,9 +7,12 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/vmihailenco/msgpack"
 )
 
 type (
@@ -87,4 +90,31 @@ func GetAppItems(appNames []string) (AppItems, []string, error) {
 	}
 
 	return officialApps, unofficialAppNames, nil
+}
+
+// SaveAppItem encode appItem => msgpack
+func SaveAppItem(appItem AppItem) error {
+	b, err := msgpack.Marshal(&appItem)
+	if err != nil {
+		return err
+	}
+
+	dir := "appdata"
+	os.Mkdir(dir, os.ModePerm)
+	out := dir + "/" + appItem.Name
+	ioutil.WriteFile(out, b, 0777)
+
+	return err
+}
+
+func SaveAppItems(appItems AppItems) error {
+	var err error
+	for _, appItem := range appItems {
+		err = SaveAppItem(appItem)
+		if err != nil {
+			return err
+		}
+	}
+
+	return err
 }
