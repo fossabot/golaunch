@@ -90,3 +90,34 @@ func TestGetAppItems(t *testing.T) {
 		log.Println(err)
 	}
 }
+
+func TestSaveAppItem(t *testing.T) {
+	appDir := "tmpAppDir"
+	os.Mkdir(appDir, os.ModePerm)
+	os.Chmod(appDir, 0777)
+	evernote, err := os.Create(appDir + "/Evernote.app")
+	if err != nil {
+		log.Println(err)
+	}
+	defer evernote.Close()
+
+	appNames, err := GetLocalAppNames(appDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	apps, _, err := GetAppItems(appNames)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = SaveAppItem(apps[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = os.RemoveAll(appDir)
+	if err != nil {
+		log.Println(err)
+	}
+}
