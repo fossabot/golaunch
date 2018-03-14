@@ -92,13 +92,13 @@ func GetAppItems(appNames []string) (AppItems, []string, error) {
 }
 
 // SaveAppItem encode appItem => msgpack
-func SaveAppItem(appItem AppItem, appdataDir string) error {
+func SaveAppItem(appItem AppItem, appDataDir string) error {
 	b, err := msgpack.Marshal(&appItem)
 	if err != nil {
 		return err
 	}
 
-	out := appdataDir + "/" + appItem.Name
+	out := appDataDir + "/" + appItem.Name
 	ioutil.WriteFile(out, b, 0777)
 
 	return err
