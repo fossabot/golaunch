@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -93,24 +92,22 @@ func GetAppItems(appNames []string) (AppItems, []string, error) {
 }
 
 // SaveAppItem encode appItem => msgpack
-func SaveAppItem(appItem AppItem) error {
+func SaveAppItem(appItem AppItem, appdataDir string) error {
 	b, err := msgpack.Marshal(&appItem)
 	if err != nil {
 		return err
 	}
 
-	dir := "appdata"
-	os.Mkdir(dir, os.ModePerm)
-	out := dir + "/" + appItem.Name
+	out := appdataDir + "/" + appItem.Name
 	ioutil.WriteFile(out, b, 0777)
 
 	return err
 }
 
-func SaveAppItems(appItems AppItems) error {
+func SaveAppItems(appItems AppItems, appdataDir string) error {
 	var err error
 	for _, appItem := range appItems {
-		err = SaveAppItem(appItem)
+		err = SaveAppItem(appItem, appdataDir)
 		if err != nil {
 			return err
 		}

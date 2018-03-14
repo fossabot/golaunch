@@ -111,7 +111,10 @@ func TestSaveAppItem(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = SaveAppItem(apps[0])
+	appdataDir := "tmpAppdataDir"
+	os.Mkdir(appdataDir, os.ModePerm)
+	os.Chmod(appdataDir, 0777)
+	err = SaveAppItem(apps[0], appdataDir)
 	if err != nil {
 		t.Fatal(err)
 	}
