@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"testing"
@@ -118,6 +119,54 @@ func TestSaveAppItem(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	err = os.RemoveAll(appDir)
+	if err != nil {
+		log.Println(err)
+	}
+	err = os.RemoveAll(appDataDir)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func TestReadAppData(t *testing.T) {
+	appDir := "tmpAppDir"
+	os.Mkdir(appDir, os.ModePerm)
+	os.Chmod(appDir, 0777)
+	evernote, err := os.Create(appDir + "/Evernote.app")
+	if err != nil {
+		log.Println(err)
+	}
+	defer evernote.Close()
+
+	appNames, err := GetLocalAppNames(appDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	apps, _, err := GetAppItems(appNames)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	appDataDir := "tmpAppdataDir"
+	os.Mkdir(appDataDir, os.ModePerm)
+	os.Chmod(appDataDir, 0777)
+	err = SaveAppItem(apps[0], appDataDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	b, err := ioutil.ReadFile(appDataDir + "/Evernote")
+	if err != nil {
+		t.Fatal(err)
+	}
+	appItem, err := ReadAppData(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	log.Printf("Read: %s", appItem)
 
 	err = os.RemoveAll(appDir)
 	if err != nil {

@@ -115,3 +115,13 @@ func SaveAppItems(appItems AppItems, appdataDir string) error {
 
 	return err
 }
+
+func ReadAppData(data []byte) (AppItem, error) {
+	var appItem AppItem
+	err := msgpack.Unmarshal(data, &appItem)
+	if err != nil {
+		return appItem, err
+	}
+
+	return appItem, err
+}
