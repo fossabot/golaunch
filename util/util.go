@@ -10,6 +10,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/vmihailenco/msgpack"
 )
 
 type (
@@ -87,4 +89,64 @@ func GetAppItems(appNames []string) (AppItems, []string, error) {
 	}
 
 	return officialApps, unofficialAppNames, nil
+}
+
+// SaveAppItem encode appItem => msgpack
+func SaveAppItem(appItem AppItem, appDataDir string) error {
+	b, err := msgpack.Marshal(&appItem)
+	if err != nil {
+		return err
+	}
+
+	out := appDataDir + "/" + appItem.Name
+	ioutil.WriteFile(out, b, 0777)
+
+	return err
+}
+
+func SaveAppItems(appItems AppItems, appdataDir string) error {
+	var err error
+	for _, appItem := range appItems {
+		err = SaveAppItem(appItem, appdataDir)
+		if err != nil {
+			return err
+		}
+	}
+
+	return err
+}
+
+func ReadAppData(data []byte) (AppItem, error) {
+	var appItem AppItem
+	err := msgpack.Unmarshal(data, &appItem)
+	if err != nil {
+		return appItem, err
+	}
+
+	return appItem, err
+}
+
+func ReadAppDataFiles(appDataDir string) (AppItems, error) {
+	files, err := ioutil.ReadDir(appDataDir)
+	if err != nil {
+		return nil, err
+	}
+
+	appItems := AppItems{}
+	for _, file := range files {
+		filename := file.Name()
+		b, err := ioutil.ReadFile(filename)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		appItem, err := ReadAppData(b)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		appItems = append(appItems, appItem)
+	}
+
+	return appItems, nil
 }
