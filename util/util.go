@@ -125,3 +125,28 @@ func ReadAppData(data []byte) (AppItem, error) {
 
 	return appItem, err
 }
+
+func ReadAppDataFiles(appDataDir string) (AppItems, error) {
+	files, err := ioutil.ReadDir(appDataDir)
+	if err != nil {
+		return nil, err
+	}
+
+	appItems := AppItems{}
+	for _, file := range files {
+		filename := file.Name()
+		b, err := ioutil.ReadFile(filename)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		appItem, err := ReadAppData(b)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		appItems = append(appItems, appItem)
+	}
+
+	return appItems, nil
+}
