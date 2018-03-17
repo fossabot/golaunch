@@ -9,26 +9,26 @@ import (
 )
 
 func TestGetLocalAppNames(t *testing.T) {
-	appDir := "tmpAppDir"
-	os.Mkdir(appDir, os.ModePerm)
-	os.Chmod(appDir, 0777)
-	sample1, err := os.Create(appDir + "/sample1.app")
+	dir := "tmpDir"
+	os.Mkdir(dir, os.ModePerm)
+	os.Chmod(dir, 0777)
+	sample1, err := os.Create(dir + "/sample1.app")
 	if err != nil {
 		log.Println(err)
 	}
 	defer sample1.Close()
-	sample2, err := os.Create(appDir + "/sample2.txt")
+	sample2, err := os.Create(dir + "/sample2.txt")
 	if err != nil {
 		log.Println(err)
 	}
 	defer sample2.Close()
-	evernote, err := os.Create(appDir + "/Evernote.app")
+	evernote, err := os.Create(dir + "/Evernote.app")
 	if err != nil {
 		log.Println(err)
 	}
 	defer evernote.Close()
 
-	appNames, err := GetLocalAppNames(appDir)
+	appNames, err := GetLocalAppNames(dir)
 	// appNames, err := GetLocalAppNames("/Applications")
 	if err != nil {
 		t.Fatal(err)
@@ -42,38 +42,38 @@ func TestGetLocalAppNames(t *testing.T) {
 	}
 
 	fmt.Println(appNames)
-	err = os.RemoveAll(appDir)
+	err = os.RemoveAll(dir)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func TestGetAppItems(t *testing.T) {
-	appDir := "tmpAppDir"
-	os.Mkdir(appDir, os.ModePerm)
-	os.Chmod(appDir, 0777)
-	sample1, err := os.Create(appDir + "/sample1.app")
+func TestGetItems(t *testing.T) {
+	dir := "tmpDir"
+	os.Mkdir(dir, os.ModePerm)
+	os.Chmod(dir, 0777)
+	sample1, err := os.Create(dir + "/sample1.app")
 	if err != nil {
 		log.Println(err)
 	}
 	defer sample1.Close()
-	sample2, err := os.Create(appDir + "/sample2.txt")
+	sample2, err := os.Create(dir + "/sample2.txt")
 	if err != nil {
 		log.Println(err)
 	}
 	defer sample2.Close()
-	evernote, err := os.Create(appDir + "/Evernote.app")
+	evernote, err := os.Create(dir + "/Evernote.app")
 	if err != nil {
 		log.Println(err)
 	}
 	defer evernote.Close()
 
-	appNames, err := GetLocalAppNames(appDir)
+	appNames, err := GetLocalAppNames(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	officialApps, unofficialAppNames, err := GetAppItems(appNames)
+	officialApps, unofficialAppNames, err := GetItems(appNames)
 	fmt.Println("officialApps: ", officialApps)
 	fmt.Println("unofficialAppNames:", unofficialAppNames)
 	if err != nil {
@@ -86,93 +86,93 @@ func TestGetAppItems(t *testing.T) {
 		t.Fatal("The app name should be Evernote.")
 	}
 
-	err = os.RemoveAll(appDir)
+	err = os.RemoveAll(dir)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func TestSaveAppItem(t *testing.T) {
-	appDir := "tmpAppDir"
-	os.Mkdir(appDir, os.ModePerm)
-	os.Chmod(appDir, 0777)
-	evernote, err := os.Create(appDir + "/Evernote.app")
+func TestSaveItem(t *testing.T) {
+	dir := "tmpDir"
+	os.Mkdir(dir, os.ModePerm)
+	os.Chmod(dir, 0777)
+	evernote, err := os.Create(dir + "/Evernote.app")
 	if err != nil {
 		log.Println(err)
 	}
 	defer evernote.Close()
 
-	appNames, err := GetLocalAppNames(appDir)
+	appNames, err := GetLocalAppNames(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	apps, _, err := GetAppItems(appNames)
+	apps, _, err := GetItems(appNames)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	appDataDir := "tmpAppdataDir"
-	os.Mkdir(appDataDir, os.ModePerm)
-	os.Chmod(appDataDir, 0777)
-	err = SaveAppItem(apps[0], appDataDir)
+	dataDir := "tmpDataDir"
+	os.Mkdir(dataDir, os.ModePerm)
+	os.Chmod(dataDir, 0777)
+	err = SaveItem(apps[0], dataDir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = os.RemoveAll(appDir)
+	err = os.RemoveAll(dir)
 	if err != nil {
 		log.Println(err)
 	}
-	err = os.RemoveAll(appDataDir)
+	err = os.RemoveAll(dataDir)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 func TestReadAppData(t *testing.T) {
-	appDir := "tmpAppDir"
-	os.Mkdir(appDir, os.ModePerm)
-	os.Chmod(appDir, 0777)
-	evernote, err := os.Create(appDir + "/Evernote.app")
+	dir := "tmpDir"
+	os.Mkdir(dir, os.ModePerm)
+	os.Chmod(dir, 0777)
+	evernote, err := os.Create(dir + "/Evernote.app")
 	if err != nil {
 		log.Println(err)
 	}
 	defer evernote.Close()
 
-	appNames, err := GetLocalAppNames(appDir)
+	appNames, err := GetLocalAppNames(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	apps, _, err := GetAppItems(appNames)
+	apps, _, err := GetItems(appNames)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	appDataDir := "tmpAppdataDir"
-	os.Mkdir(appDataDir, os.ModePerm)
-	os.Chmod(appDataDir, 0777)
-	err = SaveAppItem(apps[0], appDataDir)
+	dataDir := "tmpDataDir"
+	os.Mkdir(dataDir, os.ModePerm)
+	os.Chmod(dataDir, 0777)
+	err = SaveItem(apps[0], dataDir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	b, err := ioutil.ReadFile(appDataDir + "/Evernote")
+	b, err := ioutil.ReadFile(dataDir + "/Evernote")
 	if err != nil {
 		t.Fatal(err)
 	}
-	appItem, err := ReadAppData(b)
+	item, err := ReadAppData(b)
 	if err != nil {
 		t.Fatal(err)
 	}
-	log.Printf("Read: %s", appItem)
+	log.Printf("Read: %s", item)
 
-	err = os.RemoveAll(appDir)
+	err = os.RemoveAll(dir)
 	if err != nil {
 		log.Println(err)
 	}
-	err = os.RemoveAll(appDataDir)
+	err = os.RemoveAll(dataDir)
 	if err != nil {
 		log.Println(err)
 	}

@@ -15,25 +15,25 @@ import (
 )
 
 type (
-	AppItem struct {
+	Item struct {
 		Name             string   `json:"trackName"`
 		Description      string   `json:"description"`
 		Genres           []string `json:"genres"`
 		PrimaryGenreName string   `json:"primaryGenreName"`
 	}
 
-	AppItems []AppItem
+	Items []Item
 
 	SearchResult struct {
-		ResultCount int      `json:"resultCount"`
-		Results     AppItems `json:"results"`
+		ResultCount int   `json:"resultCount"`
+		Results     Items `json:"results"`
 	}
 )
 
 const apiEndPoint = "https://itunes.apple.com/search"
 
-func GetLocalAppNames(appDir string) ([]string, error) {
-	files, err := ioutil.ReadDir(appDir)
+func GetLocalAppNames(dir string) ([]string, error) {
+	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +55,8 @@ func GetLocalAppNames(appDir string) ([]string, error) {
 	return appNames, nil
 }
 
-func GetAppItems(appNames []string) (AppItems, []string, error) {
-	var officialApps AppItems
+func GetItems(appNames []string) (Items, []string, error) {
+	var officialApps Items
 	var unofficialAppNames []string
 
 	for _, appName := range appNames {
@@ -91,23 +91,23 @@ func GetAppItems(appNames []string) (AppItems, []string, error) {
 	return officialApps, unofficialAppNames, nil
 }
 
-// SaveAppItem encode appItem => msgpack
-func SaveAppItem(appItem AppItem, appDataDir string) error {
-	b, err := msgpack.Marshal(&appItem)
+// SaveItem encode item => msgpack
+func SaveItem(item Item, dataDir string) error {
+	b, err := msgpack.Marshal(&item)
 	if err != nil {
 		return err
 	}
 
-	out := appDataDir + "/" + appItem.Name
+	out := dataDir + "/" + item.Name
 	ioutil.WriteFile(out, b, 0777)
 
 	return err
 }
 
-func SaveAppItems(appItems AppItems, appdataDir string) error {
+func SaveItems(items Items, dataDir string) error {
 	var err error
-	for _, appItem := range appItems {
-		err = SaveAppItem(appItem, appdataDir)
+	for _, item := range items {
+		err = SaveItem(item, dataDir)
 		if err != nil {
 			return err
 		}
@@ -116,23 +116,23 @@ func SaveAppItems(appItems AppItems, appdataDir string) error {
 	return err
 }
 
-func ReadAppData(data []byte) (AppItem, error) {
-	var appItem AppItem
-	err := msgpack.Unmarshal(data, &appItem)
+func ReadAppData(data []byte) (Item, error) {
+	var item Item
+	err := msgpack.Unmarshal(data, &item)
 	if err != nil {
-		return appItem, err
+		return item, err
 	}
 
-	return appItem, err
+	return item, err
 }
 
-func ReadAppDataFiles(appDataDir string) (AppItems, error) {
-	files, err := ioutil.ReadDir(appDataDir)
+func ReadAppDataFiles(dataDir string) (Items, error) {
+	files, err := ioutil.ReadDir(dataDir)
 	if err != nil {
 		return nil, err
 	}
 
-	appItems := AppItems{}
+	items := Items{}
 	for _, file := range files {
 		filename := file.Name()
 		b, err := ioutil.ReadFile(filename)
@@ -140,13 +140,17 @@ func ReadAppDataFiles(appDataDir string) (AppItems, error) {
 			log.Println(err)
 			continue
 		}
-		appItem, err := ReadAppData(b)
+		item, err := ReadAppData(b)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-		appItems = append(appItems, appItem)
+		items = append(items, item)
 	}
 
-	return appItems, nil
+	return items, nil
+}
+
+func Render() {
+
 }
