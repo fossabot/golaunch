@@ -8,19 +8,31 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/micnncim/interactive"
+  packages = ["."]
+  revision = "691ebd3dcd85b7e33b0b3a708e82d657d9ac6c63"
+
+[[projects]]
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
+
+[[projects]]
   name = "github.com/vmihailenco/msgpack"
   packages = [
     ".",
     "codes"
   ]
-  revision = "b83fb55e0632418103602b3b23851cabc5d11762"
-  version = "v3.2.8"
+  revision = "b5e5f4eb7291af0069327d334ed6d2ed9791243c"
+  version = "v3.2.9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "892bf7b0c6e2f93b51166bf3882e50277fa5afc6"
+  revision = "e0c57d8f86c17f0724497efcb3bc617e82834821"
 
 [[projects]]
   name = "google.golang.org/appengine"
@@ -41,6 +53,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2bcd524a55a1fc26fae00bce1ae43cf89b9b872cc157af221c6ef4761e6a70e8"
+  inputs-digest = "311e0bd02764befe3fa0fe00b28885860cceffc9486abb3300b7747beda31286"
   solver-name = "gps-cdcl"
   solver-version = 1
