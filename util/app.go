@@ -1,14 +1,16 @@
 package util
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
-	"regexp"
 	"strings"
+	"text/tabwriter"
+	"text/template"
 	"time"
 
 	"github.com/vmihailenco/msgpack"
@@ -16,10 +18,11 @@ import (
 
 type (
 	Item struct {
-		Name             string   `json:"trackName"`
-		Description      string   `json:"description"`
-		Genres           []string `json:"genres"`
-		PrimaryGenreName string   `json:"primaryGenreName"`
+		Name         string   `json:"trackName"`
+		Desc         string   `json:"desc"`
+		ShortDesc    string   `json:"shortDesc"`
+		Genres       []string `json:"genres"`
+		PrimaryGenre string   `json:"primaryGenre"`
 	}
 
 	Items []Item
@@ -32,29 +35,7 @@ type (
 
 const apiEndPoint = "https://itunes.apple.com/search"
 
-func GetLocalAppNames(dir string) ([]string, error) {
-	files, err := ioutil.ReadDir(dir)
-	if err != nil {
-		return nil, err
-	}
-
-	var appNames []string
-	for _, file := range files {
-		fileName := file.Name()
-		isApp, err := regexp.MatchString(`.*\.app`, fileName)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		if isApp {
-			fileName = strings.Trim(fileName, ".app")
-			appNames = append(appNames, fileName)
-		}
-	}
-
-	return appNames, nil
-}
-
+// GetItems get app items by iTunes Search API
 func GetItems(appNames []string) (Items, []string, error) {
 	var officialApps Items
 	var unofficialAppNames []string
@@ -151,6 +132,43 @@ func ReadAppDataFiles(dataDir string) (Items, error) {
 	return items, nil
 }
 
-func Render() {
+func (items *Items) Render() ([]string, error) {
+	var max = 0
 
+	for _, item := range *items {
+		fmt.Printf("%s: %s\n", item.Name, item.PrimaryGenre)
+		if len(item.Name) > max {
+			max = len(item.Name)
+		}
+	}
+
+	var rows []string
+	// row := "{{.Name}}\t{{.PrimaryGenre}}\t{{.ShortDesc}}"
+	row := "{{.Name}}\t{{.PrimaryGenre}}"
+
+	for _, item := range *items {
+		var buf bytes.Buffer
+		w := tabwriter.NewWriter(&buf, 0, max, 0, '\t', 0)
+
+		t, err := template.New("t").Parse(row)
+		if err != nil {
+			return nil, err
+		}
+		t.Execute(w, item)
+		w.Flush()
+
+		fmt.Println(buf.String())
+		rows = append(rows, buf.String())
+	}
+
+	return rows, nil
+}
+
+func (item Item) SetShortDesc() {
+	max := 128
+	item.ShortDesc = string([]rune(item.Desc)[:max])
+}
+
+func (item Item) TrimDescNewLine() {
+	item.Desc = strings.Trim(item.Desc, "\n")
 }
