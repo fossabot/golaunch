@@ -17,7 +17,7 @@ import (
 )
 
 type (
-	Item struct {
+	AppDetail struct {
 		Name         string `json:"trackName"`
 		Desc         string `json:"description"`
 		ShortDesc    string
@@ -25,19 +25,19 @@ type (
 		PrimaryGenre string   `json:"primaryGenreName"`
 	}
 
-	Items []Item
+	AppDetails []AppDetail
 
 	SearchResult struct {
-		ResultCount int   `json:"resultCount"`
-		Results     Items `json:"results"`
+		ResultCount int        `json:"resultCount"`
+		Results     AppDetails `json:"results"`
 	}
 )
 
 const apiEndPoint = "https://itunes.apple.com/search"
 
-// GetItems get app items by iTunes Search API
-func GetItems(appNames []string) (Items, []string, error) {
-	var officialApps Items
+// FetchAppDetails get app appDetails by iTunes Search API
+func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
+	var officialApps AppDetails
 	var unofficialAppNames []string
 
 	for _, appName := range appNames {
@@ -72,23 +72,23 @@ func GetItems(appNames []string) (Items, []string, error) {
 	return officialApps, unofficialAppNames, nil
 }
 
-// SaveItem encode item => msgpack
-func SaveItem(item Item, dataDir string) error {
-	b, err := msgpack.Marshal(&item)
+// SaveAppDetail encode appDetail => msgpack
+func SaveAppDetail(appDetail AppDetail, dataDir string) error {
+	b, err := msgpack.Marshal(&appDetail)
 	if err != nil {
 		return err
 	}
 
-	out := dataDir + "/" + item.Name
+	out := dataDir + "/" + appDetail.Name
 	ioutil.WriteFile(out, b, 0666)
 
 	return err
 }
 
-func SaveItems(items Items, dataDir string) error {
+func SaveAppDetails(appDetails AppDetails, dataDir string) error {
 	var err error
-	for _, item := range items {
-		err = SaveItem(item, dataDir)
+	for _, appDetail := range appDetails {
+		err = SaveAppDetail(appDetail, dataDir)
 		if err != nil {
 			return err
 		}
@@ -97,23 +97,23 @@ func SaveItems(items Items, dataDir string) error {
 	return err
 }
 
-func ReadAppData(data []byte) (Item, error) {
-	var item Item
-	err := msgpack.Unmarshal(data, &item)
+func ReadAppData(data []byte) (AppDetail, error) {
+	var appDetail AppDetail
+	err := msgpack.Unmarshal(data, &appDetail)
 	if err != nil {
-		return item, err
+		return appDetail, err
 	}
 
-	return item, err
+	return appDetail, err
 }
 
-func ReadAppDataFiles(dataDir string) (Items, error) {
+func ReadAppDataFiles(dataDir string) (AppDetails, error) {
 	files, err := ioutil.ReadDir(dataDir)
 	if err != nil {
 		return nil, err
 	}
 
-	items := Items{}
+	appDetails := AppDetails{}
 	for _, file := range files {
 		filename := file.Name()
 		b, err := ioutil.ReadFile(dataDir + "/" + filename)
@@ -121,29 +121,29 @@ func ReadAppDataFiles(dataDir string) (Items, error) {
 			log.Println(err)
 			continue
 		}
-		item, err := ReadAppData(b)
+		appDetail, err := ReadAppData(b)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-		items = append(items, item)
+		appDetails = append(appDetails, appDetail)
 	}
 
-	return items, nil
+	return appDetails, nil
 }
 
-func (items Items) Render() ([]string, error) {
+func (appDetails AppDetails) Render() ([]string, error) {
 	max := 16
 
-	for i := range items {
-		items[i].Name = string([]rune(items[i].Name)[:max])
-		items[i].ShortDesc = string([]rune(items[i].Desc)[:64])
+	for i := range appDetails {
+		appDetails[i].Name = string([]rune(appDetails[i].Name)[:max])
+		appDetails[i].ShortDesc = string([]rune(appDetails[i].Desc)[:64])
 	}
 
 	var rows []string
 	row := "{{.Name}}\t{{.PrimaryGenre}}\t{{.ShortDesc}}"
 
-	for _, item := range items {
+	for _, appDetail := range appDetails {
 		var buf bytes.Buffer
 		w := tabwriter.NewWriter(&buf, 0, max+4, 0, '\t', 0)
 
@@ -151,7 +151,7 @@ func (items Items) Render() ([]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		t.Execute(w, item)
+		t.Execute(w, appDetail)
 		w.Flush()
 
 		rows = append(rows, buf.String())
@@ -160,11 +160,11 @@ func (items Items) Render() ([]string, error) {
 	return rows, nil
 }
 
-func (item Item) SetShortDesc() {
+func (appDetail AppDetail) SetShortDesc() {
 	max := 64
-	item.ShortDesc = string([]rune(item.Desc)[:max])
+	appDetail.ShortDesc = string([]rune(appDetail.Desc)[:max])
 }
 
-func (item Item) TrimDescNewLine() {
-	item.Desc = strings.Trim(item.Desc, "\n")
+func (appDetail AppDetail) TrimDescNewLine() {
+	appDetail.Desc = strings.Trim(appDetail.Desc, "\n")
 }

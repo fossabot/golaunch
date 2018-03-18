@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestGetItems(t *testing.T) {
+func TestFetchAppDetails(t *testing.T) {
 	dir := "tmpDir"
 	os.Mkdir(dir, os.ModePerm)
 	os.Chmod(dir, 0777)
@@ -33,7 +33,7 @@ func TestGetItems(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	officialApps, unofficialAppNames, err := GetItems(appNames)
+	officialApps, unofficialAppNames, err := FetchAppDetails(appNames)
 	fmt.Println("officialApps: ", officialApps)
 	fmt.Println("unofficialAppNames:", unofficialAppNames)
 	if err != nil {
@@ -52,7 +52,7 @@ func TestGetItems(t *testing.T) {
 	}
 }
 
-func TestSaveItem(t *testing.T) {
+func TestSaveAppDetail(t *testing.T) {
 	dir := "tmpDir"
 	os.Mkdir(dir, os.ModePerm)
 	os.Chmod(dir, 0777)
@@ -67,7 +67,7 @@ func TestSaveItem(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	apps, _, err := GetItems(appNames)
+	apps, _, err := FetchAppDetails(appNames)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func TestSaveItem(t *testing.T) {
 	dataDir := "tmpDataDir"
 	os.Mkdir(dataDir, os.ModePerm)
 	os.Chmod(dataDir, 0777)
-	err = SaveItem(apps[0], dataDir)
+	err = SaveAppDetail(apps[0], dataDir)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -105,7 +105,7 @@ func TestReadAppData(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	apps, _, err := GetItems(appNames)
+	apps, _, err := FetchAppDetails(appNames)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,7 +113,7 @@ func TestReadAppData(t *testing.T) {
 	dataDir := "tmpDataDir"
 	os.Mkdir(dataDir, os.ModePerm)
 	os.Chmod(dataDir, 0777)
-	err = SaveItem(apps[0], dataDir)
+	err = SaveAppDetail(apps[0], dataDir)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,11 +122,11 @@ func TestReadAppData(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	item, err := ReadAppData(b)
+	appDetail, err := ReadAppData(b)
 	if err != nil {
 		t.Fatal(err)
 	}
-	log.Printf("Read: %s", item)
+	log.Printf("Read: %s", appDetail)
 
 	err = os.RemoveAll(dir)
 	if err != nil {
