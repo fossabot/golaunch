@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/mitchellh/go-homedir"
 	"github.com/urfave/cli"
 
 	"github.com/micnncim/golaunch/util"
@@ -13,7 +14,13 @@ import (
 )
 
 func Launch(c *cli.Context) error {
-	dataDir := os.Getenv("HOME") + "/tmp"
+	dataDir, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	dataDir += "/tmp"
+
 	items, err := util.ReadAppDataFiles(dataDir)
 	if err != nil {
 		fmt.Println(err)
