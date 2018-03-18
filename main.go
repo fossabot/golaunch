@@ -10,6 +10,9 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "golaunch"
+	app.Commands = []cli.Command{
+		cmd.UpdateCmd(),
+	}
 	app.Usage = "Launch app"
 	app.Action = cmd.Launch
 
