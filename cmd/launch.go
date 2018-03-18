@@ -2,11 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/mitchellh/go-homedir"
+	"github.com/skratchdot/open-golang/open"
 	"github.com/urfave/cli"
 
 	"github.com/micnncim/golaunch/util"
@@ -41,13 +40,18 @@ func Launch(c *cli.Context) error {
 	}
 
 	app := strings.Split(rows[0], "\t")[0]
-	cmd := exec.Command("open", "-a", app)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
+	if err := open.Run(app); err != nil {
 		return err
 	}
+	/*
+		cmd := exec.Command("open", "-a", app)
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			return err
+		}
+	*/
 
 	return nil
 }
