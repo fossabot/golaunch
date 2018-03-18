@@ -18,11 +18,11 @@ import (
 
 type (
 	Item struct {
-		Name         string   `json:"trackName"`
-		Desc         string   `json:"desc"`
-		ShortDesc    string   `json:"shortDesc"`
+		Name         string `json:"trackName"`
+		Desc         string `json:"description"`
+		ShortDesc    string
 		Genres       []string `json:"genres"`
-		PrimaryGenre string   `json:"primaryGenre"`
+		PrimaryGenre string   `json:"primaryGenreName"`
 	}
 
 	Items []Item
@@ -80,7 +80,7 @@ func SaveItem(item Item, dataDir string) error {
 	}
 
 	out := dataDir + "/" + item.Name
-	ioutil.WriteFile(out, b, 0777)
+	ioutil.WriteFile(out, b, 0666)
 
 	return err
 }
@@ -116,7 +116,7 @@ func ReadAppDataFiles(dataDir string) (Items, error) {
 	items := Items{}
 	for _, file := range files {
 		filename := file.Name()
-		b, err := ioutil.ReadFile(filename)
+		b, err := ioutil.ReadFile(dataDir + "/" + filename)
 		if err != nil {
 			log.Println(err)
 			continue
@@ -132,23 +132,20 @@ func ReadAppDataFiles(dataDir string) (Items, error) {
 	return items, nil
 }
 
-func (items *Items) Render() ([]string, error) {
-	var max = 0
+func (items Items) Render() ([]string, error) {
+	max := 16
 
-	for _, item := range *items {
-		fmt.Printf("%s: %s\n", item.Name, item.PrimaryGenre)
-		if len(item.Name) > max {
-			max = len(item.Name)
-		}
+	for i := range items {
+		items[i].Name = string([]rune(items[i].Name)[:max])
+		items[i].ShortDesc = string([]rune(items[i].Desc)[:64])
 	}
 
 	var rows []string
-	// row := "{{.Name}}\t{{.PrimaryGenre}}\t{{.ShortDesc}}"
-	row := "{{.Name}}\t{{.PrimaryGenre}}"
+	row := "{{.Name}}\t{{.PrimaryGenre}}\t{{.ShortDesc}}"
 
-	for _, item := range *items {
+	for _, item := range items {
 		var buf bytes.Buffer
-		w := tabwriter.NewWriter(&buf, 0, max, 0, '\t', 0)
+		w := tabwriter.NewWriter(&buf, 0, max+4, 0, '\t', 0)
 
 		t, err := template.New("t").Parse(row)
 		if err != nil {
@@ -157,7 +154,6 @@ func (items *Items) Render() ([]string, error) {
 		t.Execute(w, item)
 		w.Flush()
 
-		fmt.Println(buf.String())
 		rows = append(rows, buf.String())
 	}
 
@@ -165,7 +161,7 @@ func (items *Items) Render() ([]string, error) {
 }
 
 func (item Item) SetShortDesc() {
-	max := 128
+	max := 64
 	item.ShortDesc = string([]rune(item.Desc)[:max])
 }
 
