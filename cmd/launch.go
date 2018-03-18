@@ -20,20 +20,20 @@ func Launch(c *cli.Context) error {
 	}
 	dataDir += "/tmp"
 
-	items, err := util.ReadAppDataFiles(dataDir)
+	appDetails, err := util.ReadAppDataFiles(dataDir)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
 
-	itemRows, err := items.Render()
+	appDetailRows, err := appDetails.Render()
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
 
 	command := "fzf"
-	rows, err := interactive.Select(command, itemRows)
+	rows, err := interactive.Select(command, appDetailRows)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -43,15 +43,6 @@ func Launch(c *cli.Context) error {
 	if err := open.Run(app); err != nil {
 		return err
 	}
-	/*
-		cmd := exec.Command("open", "-a", app)
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
-			return err
-		}
-	*/
 
 	return nil
 }

@@ -24,7 +24,7 @@ func update(c *cli.Context) error {
 		return err
 	}
 
-	items, _, err := util.GetItems(names)
+	appDetails, _, err := util.FetchAppDetails(names)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func update(c *cli.Context) error {
 	dataDir += "/tmp"
 	os.Mkdir(dataDir, os.ModePerm)
 	os.Chmod(dataDir, 0777)
-	err = util.SaveItems(items, dataDir)
+	err = util.SaveAppDetails(appDetails, dataDir)
 	if err != nil {
 		return err
 	}
