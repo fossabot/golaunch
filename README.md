@@ -3,9 +3,9 @@
 <h1 align="center">golaunch</h1>
 
 <p align="center">
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](./LICENSE)
-[![Build Status](https://travis-ci.org/micnncim/golaunch.svg?branch=master)](https://travis-ci.org/micnncim/golaunch)
-[![Go Report Card](https://goreportcard.com/badge/github.com/micnncim/golaunch)](https://goreportcard.com/report/github.com/micnncim/golaunch)
+  <a href="/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+  <a href="/LICENSE"><img src="https://travis-ci.org/micnncim/golaunch.svg?branch=master"/></a>
+  <a href="/LICENSE"><img src="https://goreportcard.com/badge/github.com/micnncim/golaunch"/></a>
 </p>
 
 <br><br>
