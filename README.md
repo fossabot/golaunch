@@ -1,14 +1,14 @@
-<br><br>
+<br>
 
 <h1 align="center">golaunch</h1>
 
 <p align="center">
-  <a href="/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
-  <a href="/LICENSE"><img src="https://travis-ci.org/micnncim/golaunch.svg?branch=master"/></a>
-  <a href="/LICENSE"><img src="https://goreportcard.com/badge/github.com/micnncim/golaunch"/></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+  <a href="https://travis-ci.org/micnncim/golaunch"><img src="https://travis-ci.org/micnncim/golaunch?branch=master"/></a>
+  <a href="https://goreportcard.com/report/github.com/micnncim/golaunch"><img src="https://goreportcard.com/badge/github.com/micnncim/golaunch"/></a>
 </p>
 
-<br><br>
+<br>
 
 ## :memo: Description
 
