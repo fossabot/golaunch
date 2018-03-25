@@ -18,7 +18,7 @@ func Launch(c *cli.Context) error {
 		fmt.Println(err)
 		return err
 	}
-	dataDir += "/tmp"
+	dataDir += TmpDir
 
 	appDetails, err := util.ReadAppDataFiles(dataDir)
 	if err != nil {

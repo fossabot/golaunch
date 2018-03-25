@@ -9,6 +9,14 @@ import (
 	"github.com/urfave/cli"
 )
 
+const (
+	// AppDir is application directory
+	AppDir = "/Applications"
+	// TmpDir is temporary directory
+	TmpDir = "/tmp"
+)
+
+// UpdateCmd is command updating add data
 func UpdateCmd() cli.Command {
 	return cli.Command{
 		Name:   "update",
@@ -18,7 +26,7 @@ func UpdateCmd() cli.Command {
 }
 
 func update(c *cli.Context) error {
-	dir := "/Applications"
+	dir := AppDir
 	names, err := util.GetLocalAppNames(dir)
 	if err != nil {
 		return err
@@ -34,7 +42,7 @@ func update(c *cli.Context) error {
 		fmt.Println(err)
 		return err
 	}
-	dataDir += "/tmp"
+	dataDir += TmpDir
 	os.Mkdir(dataDir, os.ModePerm)
 	os.Chmod(dataDir, 0777)
 	err = util.SaveAppDetails(appDetails, dataDir)

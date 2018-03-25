@@ -45,7 +45,7 @@ func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 		v.Add("term", appName)
 		v.Add("media", "software")
 		v.Add("limit", "1")
-		endPoint := apiEndPoint + "?" + v.Encode()
+		endPoint := fmt.Sprintf("%s?%s", apiEndPoint, v.Encode())
 		fmt.Println(endPoint)
 		res, err := http.Get(endPoint)
 		if err != nil {
