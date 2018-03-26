@@ -133,21 +133,22 @@ func ReadAppDataFiles(dataDir string) (AppDetails, error) {
 }
 
 func (appDetails AppDetails) Render() ([]string, error) {
-	max := 16
+	appNameMax := 16
+	descMax := 64
 
 	for i := range appDetails {
-		appDetails[i].Name = string([]rune(appDetails[i].Name)[:max])
-		appDetails[i].ShortDesc = string([]rune(appDetails[i].Desc)[:64])
+		appDetails[i].Name = string([]rune(appDetails[i].Name)[:appNameMax])
+		appDetails[i].Desc = string([]rune(appDetails[i].Desc)[:descMax])
 	}
 
 	var rows []string
-	row := "{{.Name}}\t{{.PrimaryGenre}}\t{{.ShortDesc}}"
+	tmpl := "{{.Name}}\t{{.PrimaryGenre}}\t{{.Desc}}"
 
 	for _, appDetail := range appDetails {
 		var buf bytes.Buffer
-		w := tabwriter.NewWriter(&buf, 0, max+4, 0, '\t', 0)
+		w := tabwriter.NewWriter(&buf, 32, 0, 4, ' ', 0)
 
-		t, err := template.New("t").Parse(row)
+		t, err := template.New("t").Parse(tmpl)
 		if err != nil {
 			return nil, err
 		}
