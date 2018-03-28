@@ -8,10 +8,40 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/micnncim/interactive"
+  name = "github.com/mattn/go-runewidth"
   packages = ["."]
-  revision = "691ebd3dcd85b7e33b0b3a708e82d657d9ac6c63"
+  revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
+  version = "v0.0.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/micnncim/picker"
+  packages = ["."]
+  revision = "567dc0cfe3614dfb561fa883b051505f35c5d6fe"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mitchellh/go-homedir"
+  packages = ["."]
+  revision = "b8bc1bf767474819792c23f32d8286a45736f1c6"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/nsf/termbox-go"
+  packages = ["."]
+  revision = "e2050e41c8847748ec5288741c0b19a8cb26d084"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/skratchdot/open-golang"
+  packages = ["open"]
+  revision = "75fb7ed4208cf72d323d7d02fd1a5964a7a9073c"
 
 [[projects]]
   name = "github.com/urfave/cli"
@@ -53,6 +83,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "311e0bd02764befe3fa0fe00b28885860cceffc9486abb3300b7747beda31286"
+  inputs-digest = "d925928d53abba45e19c378bd54112a56cbefb61d001a5a2813884d449d81692"
   solver-name = "gps-cdcl"
   solver-version = 1

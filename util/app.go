@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"text/tabwriter"
-	"text/template"
 	"time"
 
 	"github.com/vmihailenco/msgpack"
@@ -37,8 +37,8 @@ const apiEndPoint = "https://itunes.apple.com/search"
 
 // FetchAppDetails get app appDetails by iTunes Search API
 func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
-	var officialApps AppDetails
-	var unofficialAppNames []string
+	var apps AppDetails
+	var unofficials []string
 
 	for _, appName := range appNames {
 		v := url.Values{}
@@ -53,6 +53,9 @@ func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 			continue
 		}
 		defer res.Body.Close()
+		if res.StatusCode != 200 {
+			continue
+		}
 
 		result := SearchResult{}
 		if err = json.NewDecoder(res.Body).Decode(&result); err != nil {
@@ -60,16 +63,22 @@ func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 			continue
 		}
 		if len(result.Results) == 0 {
-			unofficialAppNames = append(unofficialAppNames, appName)
+			unofficials = append(unofficials, appName)
 			continue
 		}
 
-		officialApps = append(officialApps, result.Results[0])
+		app := result.Results[0]
+		// trm := string(bytes.Trim([]byte(app.Name), "\x00"))
+		// app.Name = fmt.Sprintf("%s\t%s\t%s\t", strings.Replace(trm, " ", "", -1), app.PrimaryGenre, "desc")
+		// app.Name = strings.Trim(app.Name, "\x00")
+		// app.Name = strings.Trim(app.Name, "\n")
+		// app.Name = strings.Trim(app.Name, " ")
+		apps = append(apps, app)
 
 		time.Sleep(time.Second)
 	}
 
-	return officialApps, unofficialAppNames, nil
+	return apps, unofficials, nil
 }
 
 // SaveAppDetail encode appDetail => msgpack
@@ -138,6 +147,7 @@ func (appDetails AppDetails) Render() ([]string, error) {
 
 	for i := range appDetails {
 		appDetails[i].Name = string([]rune(appDetails[i].Name)[:appNameMax])
+		appDetails[i].Name = strings.Trim(appDetails[i].Name, "\x00")
 		appDetails[i].Desc = string([]rune(appDetails[i].Desc)[:descMax])
 	}
 
