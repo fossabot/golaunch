@@ -43,6 +43,7 @@ func update(c *cli.Context) error {
 		return err
 	}
 	dataDir += TmpDir
+	os.RemoveAll(dataDir)
 	os.Mkdir(dataDir, os.ModePerm)
 	os.Chmod(dataDir, 0777)
 	err = util.SaveAppDetails(appDetails, dataDir)

@@ -68,12 +68,11 @@ func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 		}
 
 		app := result.Results[0]
-		// trm := string(bytes.Trim([]byte(app.Name), "\x00"))
-		// app.Name = fmt.Sprintf("%s\t%s\t%s\t", strings.Replace(trm, " ", "", -1), app.PrimaryGenre, "desc")
-		// app.Name = strings.Trim(app.Name, "\x00")
-		// app.Name = strings.Trim(app.Name, "\n")
-		// app.Name = strings.Trim(app.Name, " ")
-		apps = append(apps, app)
+		for _, appName := range appNames {
+			if app.Name == appName {
+				apps = append(apps, app)
+			}
+		}
 
 		time.Sleep(time.Second)
 	}

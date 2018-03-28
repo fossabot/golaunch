@@ -70,7 +70,7 @@ func Launch(c *cli.Context) error {
 			case termbox.KeyEsc, termbox.KeyCtrlD, termbox.KeyCtrlC:
 				termbox.Close()
 				os.Exit(0)
-			case termbox.KeyBackspace, termbox.KeyDelete:
+			case termbox.KeyBackspace, termbox.KeyBackspace2:
 				s.DecreaseInput()
 			case termbox.KeySpace:
 				s.IncreaseInput(' ')
