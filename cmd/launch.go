@@ -22,7 +22,7 @@ func Launch(c *cli.Context) error {
 		fmt.Println(err)
 		return err
 	}
-	dataDir += TmpDir
+	dataDir += DataDir
 
 	appDetails, err := util.ReadAppDataFiles(dataDir)
 	if err != nil {

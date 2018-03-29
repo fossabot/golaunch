@@ -12,8 +12,8 @@ import (
 const (
 	// AppDir is application directory
 	AppDir = "/Applications"
-	// TmpDir is temporary directory
-	TmpDir = "/tmp"
+	// DataDir is app data directory
+	DataDir = "/.config/golaunch/appdata"
 )
 
 // UpdateCmd is command updating add data
@@ -42,10 +42,10 @@ func update(c *cli.Context) error {
 		fmt.Println(err)
 		return err
 	}
-	dataDir += TmpDir
+	dataDir += DataDir
 	os.RemoveAll(dataDir)
-	os.Mkdir(dataDir, os.ModePerm)
-	os.Chmod(dataDir, 0777)
+	os.MkdirAll(dataDir, os.ModePerm)
+	os.Chmod(dataDir, 0755)
 	err = util.SaveAppDetails(appDetails, dataDir)
 	if err != nil {
 		return err
