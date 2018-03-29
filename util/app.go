@@ -13,6 +13,8 @@ import (
 	"text/tabwriter"
 	"time"
 
+	"github.com/briandowns/spinner"
+
 	"github.com/vmihailenco/msgpack"
 )
 
@@ -39,6 +41,10 @@ const apiEndPoint = "https://itunes.apple.com/search"
 func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 	var apps AppDetails
 	var unofficials []string
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+	s.Suffix = " Fetching app data..."
+	s.Start()
+	defer s.Stop()
 
 	for _, appName := range appNames {
 		v := url.Values{}
@@ -46,7 +52,6 @@ func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 		v.Add("media", "software")
 		v.Add("limit", "1")
 		endPoint := fmt.Sprintf("%s?%s", apiEndPoint, v.Encode())
-		fmt.Println(endPoint)
 		res, err := http.Get(endPoint)
 		if err != nil {
 			log.Println(err)
