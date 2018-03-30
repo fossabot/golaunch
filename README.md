@@ -16,11 +16,11 @@ Launcher by Go
 
 ## :memo: Description
 
+You don't remember app's name you don't usually use? No problem! `golaunch` launchs your applications by filtering name, genre and description!
+
 ***DEMO***
 
 ![golaunch-demo](https://user-images.githubusercontent.com/21333876/38103109-6bd0cfca-33c0-11e8-9e9d-86a86165877f.gif)
-
-`golaunch` launchs your applications by searching or filtering.
 
 ## :rocket: Features
 
@@ -28,6 +28,8 @@ Launcher by Go
 - Filter app w/ its simple description and launch it
 
 ## :zap: Requirement
+
+Nothing! Just download binary from [here](https://github.com/micnncim/golaunch/releases). Gopher can get this by `go get` as usual.
 
 ## :mag: Usage
 
