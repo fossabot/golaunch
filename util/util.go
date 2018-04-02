@@ -1,8 +1,11 @@
 package util
 
 import (
+	"bufio"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -28,4 +31,13 @@ func GetLocalAppNames(dir string) ([]string, error) {
 	}
 
 	return appNames, nil
+}
+
+func Scan(prompt string) (string, error) {
+	fmt.Print(prompt)
+
+	s := bufio.NewScanner(os.Stdin)
+	s.Scan()
+
+	return s.Text(), nil
 }
