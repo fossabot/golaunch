@@ -85,7 +85,7 @@ func FetchAppDetails(appNames []string) (AppDetails, []string, error) {
 	return apps, unofficials, nil
 }
 
-// SaveAppDetail encode appDetail => msgpack
+// SaveAppDetail encodes appDetail => msgpack
 func SaveAppDetail(appDetail AppDetail, dataDir string) error {
 	b, err := msgpack.Marshal(&appDetail)
 	if err != nil {
