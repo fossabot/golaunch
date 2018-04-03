@@ -34,12 +34,21 @@ Nothing! Just download binary from [here](https://github.com/micnncim/golaunch/r
 
 ## :mag: Usage
 
-```
-# Init or update app data
-$ golaunch update
-# Launch app
+Launch app
+
+```sh
 $ golaunch
-# Add your app
+```
+
+Update app data. If you've never used `golaunch`, you must exec this as init.
+
+```sh
+$ golaunch update
+```
+
+Add your app
+
+```sh
 $ golaunch add
 ```
 
