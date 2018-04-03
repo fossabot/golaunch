@@ -146,13 +146,20 @@ func ReadAppDataFiles(dataDir string) (AppDetails, error) {
 }
 
 func (appDetails AppDetails) Render() ([]string, error) {
-	appNameMax := 16
+	nameMax := 24
 	descMax := 64
 
 	for i := range appDetails {
-		appDetails[i].Name = string([]rune(appDetails[i].Name)[:appNameMax])
+		nameLen := len(string([]rune(appDetails[i].Name)))
+		if nameLen > nameMax {
+			appDetails[i].Name = string([]rune(appDetails[i].Name)[:nameMax])
+		}
 		appDetails[i].Name = strings.Trim(appDetails[i].Name, "\x00")
-		appDetails[i].Desc = string([]rune(appDetails[i].Desc)[:descMax])
+
+		descLen := len(string([]rune(appDetails[i].Desc)))
+		if descLen > descMax {
+			appDetails[i].Desc = string([]rune(appDetails[i].Desc)[:descMax])
+		}
 	}
 
 	var rows []string
