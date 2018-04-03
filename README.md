@@ -39,6 +39,8 @@ Nothing! Just download binary from [here](https://github.com/micnncim/golaunch/r
 $ golaunch update
 # Launch app
 $ golaunch
+# Add your app
+$ golaunch add
 ```
 
 ## :package: Installation
