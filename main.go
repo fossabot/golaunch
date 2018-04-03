@@ -12,6 +12,7 @@ func main() {
 	app.Name = "golaunch"
 	app.Commands = []cli.Command{
 		cmd.UpdateCmd(),
+		cmd.AddCmd(),
 	}
 	app.Usage = "Launch app"
 	app.Action = cmd.Launch

@@ -61,7 +61,7 @@ func Launch(c *cli.Context) error {
 			case termbox.KeyEnter:
 				text := picker.GetRow(s.CursorY, s.BaseFg, s.BaseBg).Text
 				termbox.Close()
-				app := fmt.Sprintf("%s/%s.app", AppDir, strings.Split(text, " ")[0])
+				app := fmt.Sprintf("%s/%s.app", AppDir, strings.Split(text, "  ")[0])
 				if err := open.Run(app); err != nil {
 					fmt.Println(err)
 					os.Exit(1)
