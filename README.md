@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://github.com/micnncim/golaunch/releases"><img src="https://img.shields.io/badge/release-v0.1.1-blue.svg"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+<a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fmicnncim%2Fgolaunch?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmicnncim%2Fgolaunch.svg?type=shield"/></a>
   <a href="https://travis-ci.org/micnncim/golaunch"><img src="https://travis-ci.org/micnncim/golaunch.svg?branch=master"/></a>
   <a href="https://goreportcard.com/report/github.com/micnncim/golaunch"><img src="https://goreportcard.com/badge/github.com/micnncim/golaunch"/></a>
 </p>
@@ -14,6 +15,9 @@ Launcher by Go
 </p>
 
 <br>
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmicnncim%2Fgolaunch.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmicnncim%2Fgolaunch?ref=badge_large)
 
 ## :memo: Description
 
